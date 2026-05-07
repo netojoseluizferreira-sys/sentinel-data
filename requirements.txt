@@ -1,0 +1,19 @@
+# --- Interface e Visualização ---
+rich>=13.0.0
+streamlit>=1.20.0
+InquirerPy>=0.3.4
+
+# --- Processamento e Validação ---
+pydantic>=2.0.0
+Faker>=18.0.0
+
+# --- Banco de Dados e Análise (Dashboard) ---
+pandas>=2.0.0
+
+# --- Testes e Qualidade ---
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# --- Infraestrutura e Logs ---
+loguru>=0.7.0
+python-decouple>=3.8

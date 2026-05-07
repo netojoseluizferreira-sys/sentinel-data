@@ -1,0 +1,34 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.env
+
+# --- Bancos de Dados e Dados Brutos ---
+*.db
+*.db-journal
+*.db-wal
+
+# Ignora os arquivos CSV que você vai processar (previne subir gigabytes de dados)
+/data/raw/*.csv
+/data/processed/*.csv
+
+# --- Logs ---
+/data/logs/*.jsonl
+*.log
+
+# --- IDEs e Ferramentas ---
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# --- Pytest ---
+.pytest_cache/
+.coverage
+htmlcov/
