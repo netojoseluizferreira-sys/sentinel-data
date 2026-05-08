@@ -2,7 +2,13 @@ import re
 
 def limpar_cpf(cpf_sujo: str) -> str:
     """
-    Remove pontos, traços e espaços, deixando apenas números.
+    Remove caracteres não numéricos de uma string de CPF.
+
+    Args:
+        cpf_sujo (str): A string original contendo pontos, traços ou espaços.
+
+    Returns:
+        str: Uma string contendo apenas os dígitos numéricos. Retorna vazio se a entrada for nula.
     """
     if not cpf_sujo:
         return ""
@@ -11,8 +17,16 @@ def limpar_cpf(cpf_sujo: str) -> str:
 
 def validar_cpf(cpf_bruto: str) -> str | None:
     """
-    Executa a limpeza e validação matemática do CPF.
-    Retorna o CPF limpo se válido, ou None se inválido.
+    Executa a limpeza e validação matemática dos dígitos verificadores do CPF.
+
+    O algoritmo calcula os dois dígitos de controle e verifica se coincidem 
+    com o que foi fornecido. Também invalida sequências de números repetidos.
+
+    Args:
+        cpf_bruto (str): O CPF original (formatado ou não).
+
+    Returns:
+        str | None: O CPF contendo apenas 11 dígitos se válido; None caso contrário.
     """
     cpf = limpar_cpf(cpf_bruto)
 
@@ -45,6 +59,19 @@ def validar_cpf(cpf_bruto: str) -> str | None:
     return cpf  # CPF válido e limpo
 
 def string_para_centavos(valor_str: str) -> int:
+    """
+    Converte valor monetário formatado (PT-BR) para um inteiro em centavos.
+
+    Remove prefixos (R$), trata separadores de milhar (ponto) e decimal (vírgula).
+    Usa arredondamento para mitigar imprecisões de ponto flutuante.
+
+    Args:
+        valor_str (str): Valor em formato brasileiro (ex: "R$ 1.250,50").
+
+    Returns:
+        int: O valor total convertido em centavos (ex: 125050). 
+             Retorna 0 para entradas inválidas ou nulas.
+    """
     if not valor_str:
         return 0
 
