@@ -1,5 +1,5 @@
 import pytest
-from src.utils.validators import validar_cpf, limpar_cpf
+from src.utils.validators import validar_cpf, limpar_cpf, string_para_centavos
 
 # --- TESTES DE LIMPEZA ---
 
@@ -49,3 +49,29 @@ def test_validar_cpf_invalidos_diversos(cpf_fake):
     Assim, garantimos que o dado inválido nunca entrará no nosso banco de dados.
     """
     assert validar_cpf(cpf_fake) is None
+
+@pytest.mark.parametrize("entrada, esperado", [
+    # --- Precisão Decimal (O terror dos floats) ---
+    ("0,10", 10),
+    ("0,20", 20),
+    ("0,30", 30), # Muitos algoritmos falham aqui e retornam 29 por erro de float
+    
+    # --- Formatos Híbridos e Sujeira ---
+    ("R$ 1.250,55", 125055),  # Padrão BR
+    ("  1000  ", 100000),     # Espaços e sem decimais
+    ("R$ -50,00", -5000),     # Valores negativos (estornos)
+    
+    # --- Entradas "Usuário Batata" Nível Hard ---
+    ("R$ 1.000,000", 100000), # Três zeros no final (deve ignorar ou arredondar)
+    ("0.00005", 0),           # Valor menor que um centavo
+    ("9.999.999,99", 999999999), # Valores gigantes (Bilhões de centavos)
+    
+    # --- Segurança e Falhas ---
+    ("Gratuito", 0),          # Texto ao invés de número
+    ("R$ --50,00", 0),        # Erro de digitação no sinal
+    (None, 0),                # Valor nulo
+    ("", 0),                  # String vazia
+    ("!!!", 0),               # Apenas símbolos
+])
+def test_string_para_centavos_exaustivo(entrada, esperado):
+    assert string_para_centavos(entrada) == esperado

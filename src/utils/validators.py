@@ -43,3 +43,25 @@ def validar_cpf(cpf_bruto: str) -> str | None:
         return None
 
     return cpf  # CPF válido e limpo
+
+def string_para_centavos(valor_str: str) -> int:
+    if not valor_str:
+        return 0
+
+    # 1. Remove R$, espaços e pontos de milhar (ex: 1.250,55 -> 1250,55)
+    # Aqui removemos o ponto APENAS se ele for separador de milhar
+    limpo = valor_str.replace("R$", "").strip()
+    
+    if "," in limpo and "." in limpo:
+        limpo = limpo.replace(".", "") # Remove ponto de milhar
+    
+    # 2. Padroniza a vírgula para ponto (padrão americano/computacional)
+    limpo = limpo.replace(",", ".")
+    
+    try:
+        # 3. Transforma em float e multiplica por 100 para ter centavos
+        # Usamos round para evitar erros de precisão do float (ex: 0.1+0.2)
+        valor_float = float(limpo)
+        return int(round(valor_float * 100))
+    except (ValueError, TypeError):
+        return 0 # Se vier "LIXO", retorna 0 (ou joga para lista vermelha)
