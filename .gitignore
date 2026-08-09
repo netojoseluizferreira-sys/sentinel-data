@@ -32,6 +32,4 @@ ENV/
 .pytest_cache/
 .coverage
 htmlcov/
-
-seus_arquivos_csv.csv
-tempCodeRunnerFile.py
+*.csv
